@@ -3,10 +3,11 @@ package me.nibbleapp.wrench.usecase
 import me.nibbleapp.wrench.type.Validation
 
 
-abstract class Validate<out ValidationError : Any, out Error, out Result>(
-        private val useCase: UseCase<Error, Result>) {
+abstract class Validate<out ValidationError : Any, Error, Result> {
 
     abstract val getValidation: Validation<ValidationError>
+
+    abstract val useCase: UseCase<Error, Result>
 
     fun execute(onValidationError: (ValidationError) -> Unit,
                 onError: (Error) -> Unit,
