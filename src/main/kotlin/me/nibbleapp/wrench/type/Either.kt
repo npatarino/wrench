@@ -8,7 +8,7 @@ sealed class Either<out L, out R> {
     /**
      * Example:
      * ```
-     * val folded: Either<Error, Value> = someMethod()
+     * val result: Either<Error, Value> = someMethod()
      * result.fold(
      *      { log("Error with $it") },
      *      { log("Success with $it") }
