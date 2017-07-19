@@ -8,5 +8,4 @@ sealed class Errors {
     class TooLong : Errors()
     class TooShort : Errors()
 
-
 }

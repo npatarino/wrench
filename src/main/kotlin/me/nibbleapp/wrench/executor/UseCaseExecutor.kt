@@ -5,7 +5,7 @@ import java.util.concurrent.ScheduledFuture
 
 interface UseCaseExecutor {
 
-  fun <T> execute(background: () -> T, ui: (result: T) -> Unit): Future<Unit>
-  fun <T> execute(background: () -> T, ui: (result: T) -> Unit, delay: Long): ScheduledFuture<*>
+    fun <T> execute(background: () -> T, ui: (result: T) -> Unit): Future<Unit>
+    fun <T> execute(background: () -> T, ui: (result: T) -> Unit, delay: Long): ScheduledFuture<*>
 
 }

@@ -7,7 +7,7 @@ sealed class Either<out L, out R> {
         override fun isLeft(): Boolean = true
     }
 
-    data class Right<out T>(val value: T) : Either<Nothing, T>(){
+    data class Right<out T>(val value: T) : Either<Nothing, T>() {
         override fun isRight(): Boolean = true
         override fun isLeft(): Boolean = false
     }
