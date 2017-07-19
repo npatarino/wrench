@@ -50,6 +50,9 @@ sealed class Either<out L, out R> {
      */
     inline fun <B> Either<*, B>.getOrElse(default: () -> B): B =
             fold({ default() }, { it })
+
+    fun getOrNull(): R? =
+            fold({ null }, { it })
 }
 
 
