@@ -1,6 +1,7 @@
 package me.nibbleapp.wrench.type
 
-import me.nibbleapp.wrench.type.Either.*
+import me.nibbleapp.wrench.type.Either.Left
+import me.nibbleapp.wrench.type.Either.Right
 import org.junit.Assert
 import org.junit.Test
 
@@ -38,7 +39,8 @@ class EitherTest {
 
     @Test
     fun `Should get a left null value`() {
-        val value = Right("Diego Armando Maradona").swap().getOrNull()
+        val either: Either<Nothing, String> = Right("Diego Armando Maradona")
+        val value = either.swap().getOrNull()
         Assert.assertNull(value)
     }
 

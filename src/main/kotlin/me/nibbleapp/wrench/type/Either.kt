@@ -40,6 +40,15 @@ sealed class Either<out L, out R> {
             fold({ Left(it) }, { Right(f(it)) })
 
     /**
+     * Example:
+     * ```
+     * Right("Maradona").getOrNull() // Result: "Maradona"
+     * Left(error).getOrNull()  // Result: null
+     * ```
+     */
+    fun getOrNull(): R? = fold({ null }, { it })
+
+    /**
      * Returns the value from this [Either.Right] or the given argument if this is a [Either.Left].
      *
      * Example:
@@ -50,9 +59,6 @@ sealed class Either<out L, out R> {
      */
     inline fun <B> Either<*, B>.getOrElse(default: () -> B): B =
             fold({ default() }, { it })
-
-    fun getOrNull(): R? =
-            fold({ null }, { it })
 }
 
 
