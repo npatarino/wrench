@@ -1,6 +1,8 @@
 package me.nibbleapp.wrench.type
 
-class Validation<out E : Any>(list: List<Either<E, *>>) {
+import me.nibbleapp.wrench.usecase.UseCase
+
+class Validation<out E : Any, Error, Result>(list: List<Either<E, *>>, val useCase: UseCase<Error, Result>) {
 
     val failures: List<E> = list.filter { it.isLeft() }
             .map { it.swap().getOrNull() }
@@ -8,18 +10,18 @@ class Validation<out E : Any>(list: List<Either<E, *>>) {
 
     val hasFailures: Boolean = failures.isNotEmpty()
 
-    fun <F, S> execute(failure: () -> F,
-                        handleValidationErrors: (E) -> Unit,
-                        validationSuccess: () -> Unit,
-                        success: () -> S) {
+    fun <F> execute(failure: () -> F,
+                    handleValidationErrors: (E) -> Unit,
+                    validationSuccess: () -> Unit): Either<List<E>, UseCase<Error, Result>> {
         if (hasFailures) {
             failure()
             failures.map {
                 handleValidationErrors(it)
             }
+            return Either.Left(failures)
         } else {
             validationSuccess()
-            success()
+            return Either.Right(useCase)
         }
     }
 

@@ -13,18 +13,19 @@ import java.util.concurrent.Executors
 
 fun main(args: Array<String>) {
 
-    val recipients = emailsValid
+    val recipients = emailsInvalid
 
-    val validation: Validation<EmailErrors> = Validation(recipients.map { validateEmail(it).invoke() })
 
-    val useCase = UseCase(sendEmail(recipients), useCaseExecutor)
-
-    Validate(validation, useCase)
-            .validate(onValidationError = onValidationError(),
-                    handleValidationErrors = handleValidationErrors(),
-                    onValidationSuccess = onValidationSuccess(),
-                    onError = onSendError(),
-                    onSuccess = onSendSuccess())
+    Validate(Validation(
+            recipients.map { validateEmail(it).invoke() }, // It could be a list of Either (small validations)
+            UseCase(sendEmail(recipients), useCaseExecutor))
+    ).validate(
+            onValidationError(),
+            handleValidationErrors(),
+            onValidationSuccess()
+    ).map {
+        it.execute(onSendError(), onSendSuccess())
+    }
 }
 
 private fun handleValidationErrors(): (EmailErrors) -> Unit = {

@@ -6,8 +6,9 @@ import me.nibbleapp.wrench.usecase.UseCase
 
 fun main(args: Array<String>) {
 
-    val useCase = UseCase(validateEmail(emailInvalid), useCaseExecutor)
-    useCase.execute(handleValidationErrors(), onSendEmailSuccess())
+    UseCase(validateEmail(emailInvalid),
+            useCaseExecutor)
+            .execute(handleValidationErrors(), onSendEmailSuccess())
 
 }
 
