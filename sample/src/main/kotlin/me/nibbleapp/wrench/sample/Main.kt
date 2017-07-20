@@ -24,11 +24,6 @@ val emailsValid = listOf(
 
 fun main(args: Array<String>) {
 
-    testValidate()
-
-}
-
-private fun testValidate() {
     val validate = EmailValidate(
             emailsValid,
             useCaseExecutor)
