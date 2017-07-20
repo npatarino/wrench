@@ -2,19 +2,16 @@ package me.nibbleapp.wrench.usecase
 
 import me.nibbleapp.wrench.type.Validation
 
+class Validate<out ValidationError : Any, out Error, out Result>(
+        private val validation: Validation<ValidationError>,
+        private val useCase: UseCase<Error, Result>) {
 
-abstract class Validate<out ValidationError : Any, Error, Result> {
-
-    abstract val getValidation: Validation<ValidationError>
-
-    abstract val useCase: UseCase<Error, Result>
-
-    fun execute(onValidationError: () -> Unit = {},
+    fun validate(onValidationError: () -> Unit = {},
                 handleValidationErrors: (ValidationError) -> Unit = {},
                 onValidationSuccess: () -> Unit = {},
                 onError: (Error) -> Unit = {},
                 onSuccess: (Result) -> Unit = {}): Unit {
-        getValidation.validate(
+        validation.execute(
                 onValidationError,
                 handleValidationErrors,
                 onValidationSuccess,
@@ -23,8 +20,6 @@ abstract class Validate<out ValidationError : Any, Error, Result> {
     }
 
     private fun onValidationSuccess(onError: (Error) -> Unit, onSuccess: (Result) -> Unit) =
-            {
-                useCase.execute(onError, onSuccess)
-            }
+            { useCase.execute(onError, onSuccess) }
 
 }

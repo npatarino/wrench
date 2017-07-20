@@ -4,7 +4,7 @@ import me.nibbleapp.wrench.executor.UseCaseExecutor
 import me.nibbleapp.wrench.type.Either
 import java.util.concurrent.Future
 
-abstract class UseCase<Error, Result>(private val executor: UseCaseExecutor) {
+class UseCase<Error, Result>(private val background: () -> Either<Error, Result>, private val executor: UseCaseExecutor) {
 
     private lateinit var future: Future<*>
 
@@ -25,7 +25,4 @@ abstract class UseCase<Error, Result>(private val executor: UseCaseExecutor) {
     fun foreground(it: Either<Error, Result>, error: (Error) -> Unit, success: (Result) -> Unit) {
         it.fold(error, success)
     }
-
-    abstract fun background(): Either<Error, Result>
-
 }

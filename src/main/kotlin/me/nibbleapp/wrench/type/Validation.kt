@@ -8,7 +8,7 @@ class Validation<out E : Any>(list: List<Either<E, *>>) {
 
     val hasFailures: Boolean = failures.isNotEmpty()
 
-    fun <F, S> validate(failure: () -> F,
+    fun <F, S> execute(failure: () -> F,
                         handleValidationErrors: (E) -> Unit,
                         validationSuccess: () -> Unit,
                         success: () -> S) {
