@@ -1,17 +1,18 @@
 package me.nibbleapp.wrench.type
 
-class Validation<out E : Any>(vararg disjunctionSequence: Either<E, *>) {
+class Validation<out E : Any>(list: List<Either<E, *>>) {
 
-    val failures: List<E> = disjunctionSequence.filter { it.isLeft() }
+    val failures: List<E> = list.filter { it.isLeft() }
             .map { it.swap().getOrNull() }
             .filterNotNull()
 
     val hasFailures: Boolean = failures.isNotEmpty()
 
-    fun <F, S> validate(validationSuccess: () -> Unit, failure: (E) -> F, success: () -> S) {
+    fun <F, S> validate(failure: () -> F, handleValidationErrors: (E) -> Unit, validationSuccess: () -> Unit, success: () -> S) {
         if (hasFailures) {
+            failure()
             failures.map {
-                failure(it)
+                handleValidationErrors(it)
             }
         } else {
             validationSuccess()

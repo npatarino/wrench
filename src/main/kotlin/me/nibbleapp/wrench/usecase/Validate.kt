@@ -9,13 +9,15 @@ abstract class Validate<out ValidationError : Any, Error, Result> {
 
     abstract val useCase: UseCase<Error, Result>
 
-    fun execute(onValidationError: (ValidationError) -> Unit,
-                onValidationSuccess: () -> Unit,
-                onError: (Error) -> Unit,
-                onSuccess: (Result) -> Unit): Unit {
+    fun execute(onValidationError: () -> Unit = {},
+                handleValidationErrors: (ValidationError) -> Unit = {},
+                onValidationSuccess: () -> Unit = {},
+                onError: (Error) -> Unit = {},
+                onSuccess: (Result) -> Unit = {}): Unit {
         getValidation.validate(
-                onValidationSuccess,
                 onValidationError,
+                handleValidationErrors,
+                onValidationSuccess,
                 onValidationSuccess(onError, onSuccess)
         )
     }
