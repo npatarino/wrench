@@ -4,6 +4,9 @@ import me.nibbleapp.wrench.sample.error.EmailErrors
 import me.nibbleapp.wrench.sample.error.SendEmailErrors
 import me.nibbleapp.wrench.sample.executor.MainExecutor
 import me.nibbleapp.wrench.sample.usecase.EmailValidate
+import java.util.concurrent.Executors
+
+val useCaseExecutor = MainExecutor(Executors.newScheduledThreadPool(4))
 
 val emailsInvalid = listOf(
         "npatarino@gmail.com",
@@ -21,16 +24,20 @@ val emailsValid = listOf(
 
 fun main(args: Array<String>) {
 
+    testValidate()
+
+}
+
+private fun testValidate() {
     val validate = EmailValidate(
             emailsValid,
-            MainExecutor())
+            useCaseExecutor)
 
     validate.execute(onValidationError(),
             handleValidationErrors(),
             onValidationSuccess(),
             onSendError(),
             onSendSuccess())
-
 }
 
 fun onValidationError(): () -> Unit = {

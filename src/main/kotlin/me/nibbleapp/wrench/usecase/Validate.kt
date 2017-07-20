@@ -23,6 +23,8 @@ abstract class Validate<out ValidationError : Any, Error, Result> {
     }
 
     private fun onValidationSuccess(onError: (Error) -> Unit, onSuccess: (Result) -> Unit) =
-            { useCase.execute(onError, onSuccess) }
+            {
+                useCase.execute(onError, onSuccess)
+            }
 
 }

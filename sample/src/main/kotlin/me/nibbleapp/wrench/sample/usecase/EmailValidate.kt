@@ -11,7 +11,7 @@ import me.nibbleapp.wrench.usecase.Validate
 class EmailValidate(private val emails: List<String>, private val useCaseExecutor: UseCaseExecutor)
     : Validate<EmailErrors, SendEmailErrors, Boolean>() {
 
-    private val validEmailPattern: Regex = "^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$".toRegex()
+    private val validEmailPattern: Regex = "^[_A-Za-z0-9-+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$".toRegex()
     private val maxLengthCharacters = 50
     private val minLengthCharacters = 6
 
