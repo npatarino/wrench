@@ -1,11 +1,11 @@
 package me.nibbleapp.wrench.sample.error
 
 
-sealed class EmailErrors {
+sealed class EmailErrors(val email: String) {
 
-    class Empty : EmailErrors()
-    class Invalid : EmailErrors()
-    class TooLong : EmailErrors()
-    class TooShort : EmailErrors()
+    class Empty(email: String) : EmailErrors(email)
+    class Invalid(email: String) : EmailErrors(email)
+    class TooLong(email: String) : EmailErrors(email)
+    class TooShort(email: String) : EmailErrors(email)
 
 }

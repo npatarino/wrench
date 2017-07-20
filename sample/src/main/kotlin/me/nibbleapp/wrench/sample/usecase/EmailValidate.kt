@@ -29,10 +29,10 @@ class EmailValidate(private val emails: List<String>, private val useCaseExecuto
 
     private fun check(email: String): Either<EmailErrors, Boolean> {
         return when {
-            email.isBlank() -> Either.Left(EmailErrors.Empty())
-            isTooLong(email) -> Either.Left(EmailErrors.TooLong())
-            isTooShort(email) -> Either.Left(EmailErrors.TooLong())
-            isInvalid(email) -> Either.Left(EmailErrors.Invalid())
+            email.isBlank() -> Either.Left(EmailErrors.Empty(email))
+            isTooLong(email) -> Either.Left(EmailErrors.TooLong(email))
+            isTooShort(email) -> Either.Left(EmailErrors.TooShort(email))
+            isInvalid(email) -> Either.Left(EmailErrors.Invalid(email))
             else -> Either.Right(true)
         }
     }

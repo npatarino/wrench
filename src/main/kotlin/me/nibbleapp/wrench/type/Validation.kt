@@ -8,7 +8,10 @@ class Validation<out E : Any>(list: List<Either<E, *>>) {
 
     val hasFailures: Boolean = failures.isNotEmpty()
 
-    fun <F, S> validate(failure: () -> F, handleValidationErrors: (E) -> Unit, validationSuccess: () -> Unit, success: () -> S) {
+    fun <F, S> validate(failure: () -> F,
+                        handleValidationErrors: (E) -> Unit,
+                        validationSuccess: () -> Unit,
+                        success: () -> S) {
         if (hasFailures) {
             failure()
             failures.map {

@@ -9,7 +9,8 @@ val emailsInvalid = listOf(
         "npatarino@gmail.com",
         "npatarino",
         "diegoarmandomaradonabestplayerintheuniverse@gmail.com",
-        "a@b.cd"
+        "a@b.cd",
+        ""
 )
 
 val emailsValid = listOf(
@@ -21,10 +22,14 @@ val emailsValid = listOf(
 fun main(args: Array<String>) {
 
     val validate = EmailValidate(
-            emailsInvalid,
+            emailsValid,
             MainExecutor())
 
-    validate.execute(onValidationError(), handleValidationErrors(), onValidationSuccess(), onSendError(), onSendSuccess())
+    validate.execute(onValidationError(),
+            handleValidationErrors(),
+            onValidationSuccess(),
+            onSendError(),
+            onSendSuccess())
 
 }
 
@@ -34,23 +39,23 @@ fun onValidationError(): () -> Unit = {
 
 fun handleValidationErrors(): (EmailErrors) -> Unit = {
     when (it) {
-        is EmailErrors.Empty -> println("\tEmail is empty")
-        is EmailErrors.Invalid -> println("\tEmail is invalid")
-        is EmailErrors.TooShort -> println("\tEmail is too short")
-        is EmailErrors.TooLong -> println("\tEmail is too long")
+        is EmailErrors.Empty -> println("\t\"${it.email}\" is empty")
+        is EmailErrors.Invalid -> println("\t\"${it.email}\" is invalid")
+        is EmailErrors.TooLong -> println("\t\"${it.email}\" is too long")
+        is EmailErrors.TooShort -> println("\t\"${it.email}\" is too short")
     }
 }
 
 fun onValidationSuccess() = {
-    println("Works with no errors")
+    println("Validation was success")
 }
 
 private fun onSendError(): (SendEmailErrors) -> Unit = {
-    println("Validation doesn't match")
+    println("UseCase error")
 }
 
 private fun onSendSuccess(): (Boolean) -> Unit = {
-    println("Works with no errors")
+    println("UseCase success")
 }
 
 
