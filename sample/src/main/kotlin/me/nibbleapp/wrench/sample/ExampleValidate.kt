@@ -26,6 +26,7 @@ fun main(args: Array<String>) {
     ).map {
         it.execute(onSendError(), onSendSuccess())
     }
+
 }
 
 private fun handleValidationErrors(): (EmailErrors) -> Unit = {
