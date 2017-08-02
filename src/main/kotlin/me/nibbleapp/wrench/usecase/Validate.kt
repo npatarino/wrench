@@ -13,7 +13,7 @@ class Validate<out ValidationError : Any, Error, Result>(
             execute(onValidationError, handleValidationErrors, onValidationSuccess)
 
 
-    val failures: List<ValidationError> = list
+    private val failures: List<ValidationError> = list
             .map {
                 when (it) {
                     is Validation.Invalid -> it.error
@@ -23,7 +23,7 @@ class Validate<out ValidationError : Any, Error, Result>(
 
     val hasFailures: Boolean = failures.isNotEmpty()
 
-    fun <F> execute(failure: () -> F,
+    private fun <F> execute(failure: () -> F,
                     handleValidationErrors: (ValidationError) -> Unit,
                     validationSuccess: () -> Unit): Either<List<ValidationError>, UseCase<Error, Result>> {
         if (hasFailures) {
