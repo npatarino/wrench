@@ -1,11 +1,10 @@
 package me.nibbleapp.wrench.sample
 
-import me.nibbleapp.wrench.sample.error.EmailErrors
-import me.nibbleapp.wrench.sample.error.SendEmailErrors
+import me.nibbleapp.wrench.sample.error.EmailError
+import me.nibbleapp.wrench.sample.error.SendEmailError
 import me.nibbleapp.wrench.sample.executor.MainExecutor
 import me.nibbleapp.wrench.sample.usecase.email.sendEmail
 import me.nibbleapp.wrench.sample.usecase.email.validateEmail
-import me.nibbleapp.wrench.type.Validation
 import me.nibbleapp.wrench.usecase.UseCase
 import me.nibbleapp.wrench.usecase.Validate
 import java.util.concurrent.Executors
@@ -15,13 +14,13 @@ fun main(args: Array<String>) {
 
     val recipients = emailsInvalid
 
+    val useCase = UseCase(sendEmail(recipients), useCaseExecutor)
 
-    Validate(Validation(
-            recipients.map { validateEmail(it).invoke() }, // It could be a list of Either (small validations)
-            UseCase(sendEmail(recipients), useCaseExecutor))
-    ).validate(
+    val eitherList = recipients.map { validateEmail(it).invoke() }
+
+    Validate(eitherList, useCase).validate(
             onValidationError(),
-            handleValidationErrors(),
+            handleSendEmailErrors(),
             onValidationSuccess()
     ).map {
         it.execute(onSendError(), onSendSuccess())
@@ -29,12 +28,12 @@ fun main(args: Array<String>) {
 
 }
 
-private fun handleValidationErrors(): (EmailErrors) -> Unit = {
+private fun handleSendEmailErrors(): (EmailError) -> Unit = {
     when (it) {
-        is EmailErrors.Empty -> println("\t\"${it.email}\" is empty")
-        is EmailErrors.Invalid -> println("\t\"${it.email}\" is invalid")
-        is EmailErrors.TooLong -> println("\t\"${it.email}\" is too long")
-        is EmailErrors.TooShort -> println("\t\"${it.email}\" is too short")
+        is EmailError.Empty -> println("\t\"${it.email}\" is empty")
+        is EmailError.Invalid -> println("\t\"${it.email}\" is invalid")
+        is EmailError.TooLong -> println("\t\"${it.email}\" is too long")
+        is EmailError.TooShort -> println("\t\"${it.email}\" is too short")
     }
 }
 
@@ -46,7 +45,7 @@ fun onValidationSuccess(): () -> Unit = {
     println("Validation was success")
 }
 
-private fun onSendError(): (SendEmailErrors) -> Unit = {
+private fun onSendError(): (SendEmailError) -> Unit = {
     println("Emails wasn't sent")
 }
 

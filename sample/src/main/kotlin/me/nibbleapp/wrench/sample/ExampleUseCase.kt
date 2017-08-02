@@ -1,22 +1,34 @@
 package me.nibbleapp.wrench.sample
 
-import me.nibbleapp.wrench.sample.error.EmailErrors
-import me.nibbleapp.wrench.sample.usecase.email.validateEmail
+import me.nibbleapp.wrench.sample.error.EmailError
+import me.nibbleapp.wrench.sample.error.SendEmailError
+import me.nibbleapp.wrench.sample.usecase.email.checkEmail
+import me.nibbleapp.wrench.sample.usecase.email.sendEmail
 import me.nibbleapp.wrench.usecase.UseCase
 
 fun main(args: Array<String>) {
 
-    UseCase(validateEmail(emailInvalid), useCaseExecutor)
-            .execute(handleValidationErrors(), onSendEmailSuccess())
+    UseCase(sendEmail(listOf("", "", "")), useCaseExecutor)
+            .execute(handleSendEmailErrors(), onSendEmailSuccess())
 
+    UseCase(checkEmail(emailInvalid), useCaseExecutor)
+            .execute(handleValidationErrors(), onSendEmailSuccess())
 }
 
-private fun handleValidationErrors(): (EmailErrors) -> Unit = {
+fun handleValidationErrors(): (EmailError) -> Unit = {
     when (it) {
-        is EmailErrors.Empty -> println("\t\"${it.email}\" is empty")
-        is EmailErrors.Invalid -> println("\t\"${it.email}\" is invalid")
-        is EmailErrors.TooLong -> println("\t\"${it.email}\" is too long")
-        is EmailErrors.TooShort -> println("\t\"${it.email}\" is too short")
+        is EmailError.Empty -> println("\t\"${it.email}\" is empty")
+        is EmailError.Invalid -> println("\t\"${it.email}\" is invalid")
+        is EmailError.TooLong -> println("\t\"${it.email}\" is too long")
+        is EmailError.TooShort -> println("\t\"${it.email}\" is too short")
+    }
+}
+
+private fun handleSendEmailErrors(): (SendEmailError) -> Unit = {
+    when (it) {
+        is SendEmailError.ServerError -> println("Server error")
+        is SendEmailError.NoNetworkError -> println("No network error")
+        is SendEmailError.BadRequest -> println("Bad request error")
     }
 }
 

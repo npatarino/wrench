@@ -1,28 +1,22 @@
 package me.nibbleapp.wrench.type
 
-import me.nibbleapp.wrench.usecase.UseCase
+sealed class Validation<out ValidationError> {
 
-class Validation<out E : Any, Error, Result>(list: List<Either<E, *>>, val useCase: UseCase<Error, Result>) {
-
-    val failures: List<E> = list.filter { it.isLeft() }
-            .map { it.swap().getOrNull() }
-            .filterNotNull()
-
-    val hasFailures: Boolean = failures.isNotEmpty()
-
-    fun <F> execute(failure: () -> F,
-                    handleValidationErrors: (E) -> Unit,
-                    validationSuccess: () -> Unit): Either<List<E>, UseCase<Error, Result>> {
-        if (hasFailures) {
-            failure()
-            failures.map {
-                handleValidationErrors(it)
-            }
-            return Either.Left(failures)
-        } else {
-            validationSuccess()
-            return Either.Right(useCase)
-        }
+    object Valid : Validation<Nothing>() {
+        override fun isValid(): Boolean = true
     }
 
+    class Invalid<out ValidationError>(val error: ValidationError) : Validation<ValidationError>() {
+        override fun isValid(): Boolean = false
+    }
+
+    abstract fun isValid(): Boolean
+
+    inline fun <B> fold(fe: (ValidationError) -> B, fa: () -> B): B =
+            when (this) {
+                is Valid -> fa()
+                is Invalid -> (fe(error))
+            }
+
+    fun toEither(): Either<ValidationError, Boolean> = fold({ Either.Left(it) }, { Either.Right(true) })
 }
