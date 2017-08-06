@@ -8,11 +8,9 @@ import me.nibbleapp.wrench.usecase.UseCase
 
 fun main(args: Array<String>) {
 
-    UseCase(sendEmail(listOf("", "", "")), useCaseExecutor)
-            .execute(handleSendEmailErrors(), onSendEmailSuccess())
+    UseCase(sendEmail(listOf("", "", "")), useCaseExecutor).execute(10000).get().fold(handleSendEmailErrors(), onSendEmailSuccess())
 
-    UseCase(checkEmail(emailInvalid), useCaseExecutor)
-            .execute(handleValidationErrors(), onSendEmailSuccess())
+    UseCase(checkEmail(emailValid), useCaseExecutor).execute().fold(handleValidationErrors(), onSendEmailSuccess())
 }
 
 fun handleValidationErrors(): (EmailError) -> Unit = {

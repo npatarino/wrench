@@ -22,6 +22,7 @@ fun validateEmail(email: String): () -> Validation<EmailError> = {
     }
 }
 
+
 fun checkEmail(email: String): () -> Either<EmailError, Boolean> = {
     validateEmail(email).invoke().toEither()
 }

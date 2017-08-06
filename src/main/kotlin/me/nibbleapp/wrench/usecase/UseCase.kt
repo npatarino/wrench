@@ -3,20 +3,21 @@ package me.nibbleapp.wrench.usecase
 import me.nibbleapp.wrench.executor.UseCaseExecutor
 import me.nibbleapp.wrench.type.Either
 import java.util.concurrent.Future
+import java.util.concurrent.ScheduledFuture
 
 class UseCase<Error, Result>(private val background: () -> Either<Error, Result>, private val executor: UseCaseExecutor) {
 
-    private lateinit var future: Future<*>
+    private lateinit var future: Future<Either<Error, Result>>
 
-    fun execute(error: (Error) -> Unit, success: (Result) -> Unit) {
-        future = executor.execute({ background() }, { foreground(it, error, success) })
+    fun execute(delay: Long = 0) : ScheduledFuture<Either<Error, Result>> {
+        future = executor.execute({ background() }, delay)
+        return future as ScheduledFuture<Either<Error, Result>>
     }
 
-    fun execute(error: (Error) -> Unit, success: (Result) -> Unit, delay: Long) {
-        future = executor.execute({ background() }, { foreground(it, error, success) }, delay)
+    fun execute(): Either<Error, Result> {
+        future = executor.execute({background()})
+        return future.get()
     }
-
-    fun execute(): Either<Error, Result> = background()
 
     fun cancel() {
         future.cancel(true)
