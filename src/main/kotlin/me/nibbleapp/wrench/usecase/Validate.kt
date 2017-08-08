@@ -3,11 +3,11 @@ package me.nibbleapp.wrench.usecase
 import me.nibbleapp.wrench.type.Either
 import me.nibbleapp.wrench.type.Validation
 
-class Validate<out ValidationError : Any, out Error, out Result>(list: List<() -> Validation<ValidationError>>,
+class Validate<out ValidationError : Any, Error, Result>(list: List<() -> Validation<ValidationError>>,
                                                                  private val useCase: UseCase<Error, Result>) {
 
-    fun validate(): Either<List<ValidationError>, Either<Error, Result>> =
-            if (hasFailures) Either.Left(failures) else Either.Right(useCase.execute())
+    fun validate(): Either<List<ValidationError>, UseCase<Error, Result>> =
+            if (hasFailures) Either.Left(failures) else Either.Right(useCase)
 
     private val failures: List<ValidationError> = list
             .map {

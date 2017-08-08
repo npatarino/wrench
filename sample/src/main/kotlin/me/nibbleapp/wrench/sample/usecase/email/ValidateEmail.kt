@@ -21,8 +21,3 @@ fun validateEmail(email: String): () -> Validation<EmailError> = {
         else -> Validation.Valid
     }
 }
-
-
-fun checkEmail(email: String): () -> Either<EmailError, Boolean> = {
-    validateEmail(email).invoke().toEither()
-}
