@@ -18,18 +18,8 @@ class Then<Error, Result>(private val function: () -> Either<Error, Result>,
     fun ui(ui: (Either<Error, Result>) -> Unit = {}): UseCaseExecutable<Error, Result> =
             UseCaseExecutable(function, ui, delay)
 
-    fun run(useCaseExecutor: UseCaseExecutor<Error, Result>){
+    fun run(useCaseExecutor: UseCaseExecutor<Error, Result>) {
         useCaseExecutor.execute(function, {}, delay)
     }
-
-}
-
-class UseCaseExecutable<Error, Result>(private val function: () -> Either<Error, Result>,
-                                       private val ui: (Either<Error, Result>) -> Unit,
-                                       private val delay: Long) {
-
-    fun run(useCaseExecutor: UseCaseExecutor<Error, Result>): Deferred<Unit> =
-            useCaseExecutor.execute(function, ui, delay)
-
 
 }
