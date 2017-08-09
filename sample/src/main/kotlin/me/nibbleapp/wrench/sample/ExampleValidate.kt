@@ -1,7 +1,11 @@
 package me.nibbleapp.wrench.sample
 
 import me.nibbleapp.wrench.sample.error.EmailError
+import me.nibbleapp.wrench.sample.error.SendEmailError
 import me.nibbleapp.wrench.sample.executor.DefaultExecutor
+import me.nibbleapp.wrench.sample.model.Message
+import me.nibbleapp.wrench.sample.usecase.email.sendEmail
+import me.nibbleapp.wrench.usecase.UseCase
 import java.util.concurrent.Executors
 
 
@@ -9,7 +13,15 @@ fun main(args: Array<String>) {
 
     val recipients = emailsInvalid
 
-//    val useCase = UseCase(sendEmail(recipients), useCaseExecutor)
+
+    val completion = UseCase<SendEmailError, Message>()
+            .bg(sendEmail(recipients))
+            .and { it.map { Message(it.text.reversed(), it.date) } }
+            .and { it.map { Message(it.text.toUpperCase(), it.date) } }
+            .map { it.toModel() }
+
+
+
 //
 //    val eitherList = recipients.map { validateEmail(it) }
 //
@@ -17,7 +29,7 @@ fun main(args: Array<String>) {
 //            .fold(
 //                    { handleInvalidate(it) },
 //                    {
-//                        it.execute().get()
+//                        it.execute().run()
 //                                .fold(
 //                                        { handleUseCaseError() },
 //                                        { handleUseCaseSuccess() }

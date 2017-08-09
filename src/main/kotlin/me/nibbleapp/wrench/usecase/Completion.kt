@@ -15,8 +15,9 @@ class Completion<Error, Result>(private val function: () -> Either<Error, Result
         return Completion({ function.invoke().map { f(it) } }, delay)
     }
 
-    fun get(ui: (Either<Error, Result>) -> Unit = {},
+    fun run(ui: (Either<Error, Result>) -> Unit = {},
             useCaseExecutor: UseCaseExecutor<Error, Result>): Deferred<Unit> =
             useCaseExecutor.execute(function, ui, delay)
+
 
 }
