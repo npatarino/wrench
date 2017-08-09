@@ -8,8 +8,6 @@ import java.util.concurrent.Executors
 
 class UseCaseTest {
 
-    private val mainExecutor = DefaultExecutor(Executors.newScheduledThreadPool(4))
-
 //    @Test
 //    fun `Given an error, use case should return left either`() {
 //        val result = UseCase({Either.Left(Error.UnknownError())}, mainExecutor).execute()

@@ -9,8 +9,6 @@ import java.util.concurrent.Executors
 
 class ValidateTest {
 
-    private val mainExecutor = DefaultExecutor(Executors.newScheduledThreadPool(4))
-
     private val oneValidValidation = listOf({ Validation.Valid })
     private val oneInvalidValidation = listOf({ Validation.Invalid(UnknownError()) })
     private val twoInvalidsValidation = listOf({ Validation.Invalid(UnknownError()) }, { Validation.Invalid(UnknownError()) })

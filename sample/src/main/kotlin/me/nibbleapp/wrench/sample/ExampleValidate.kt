@@ -58,8 +58,6 @@ private fun handleInvalidate(it: List<EmailError>): List<Unit> = it.map {
 }
 
 
-val useCaseExecutor = DefaultExecutor(Executors.newScheduledThreadPool(4))
-
 val emailsInvalid = listOf(
         "npatarino@gmail.com",
         "npatarino",
