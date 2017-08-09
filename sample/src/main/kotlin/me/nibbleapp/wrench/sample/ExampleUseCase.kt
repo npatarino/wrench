@@ -12,17 +12,19 @@ fun main(args: Array<String>) {
     val delay: Long = 5000
     val sleep: Long = 10000
 
-    UseCase<SendEmailError, Message>()
+    val useCase = UseCase<SendEmailError, Message>()
             .bg(sendEmail(recipients), delay)
             .and { it.map { Message(it.text.reversed(), it.date) } }
+            .and { it.map { Message(it.text.toUpperCase(), it.date) } }
             .map { it.toModel() }
             .get { ui(it) }
 
-    UseCase<SendEmailError, Message>()
-            .bg(sendEmail(recipients), delay)
-            .get()
-
-    println("Started")
+    if(useCase.isCompleted){
+        println("Late")
+    }else{
+        println("Cancel")
+        useCase.cancel()
+    }
 
     Thread.sleep(sleep)
     println("Finished")

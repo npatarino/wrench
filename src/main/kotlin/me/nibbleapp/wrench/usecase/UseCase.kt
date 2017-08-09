@@ -1,6 +1,7 @@
 package me.nibbleapp.wrench.usecase
 
 import kotlinx.coroutines.experimental.CommonPool
+import kotlinx.coroutines.experimental.Deferred
 import kotlinx.coroutines.experimental.async
 import kotlinx.coroutines.experimental.delay
 import me.nibbleapp.wrench.type.Either
@@ -23,16 +24,11 @@ class Completion<Error, Result>(private val function: () -> Either<Error, Result
         return Completion({ function.invoke().map { f(it) } }, delay)
     }
 
-    fun get(ui: (Either<Error, Result>) -> Unit): Unit {
-        async(CommonPool) {
-            delay(delay)
-            ui(function())
-        }
-    }
-
-    fun get() {
-        get { }
-    }
+    fun get(ui: (Either<Error, Result>) -> Unit = {}): Deferred<Unit> =
+            async(CommonPool) {
+                delay(delay)
+                ui(function())
+            }
 
 }
 
