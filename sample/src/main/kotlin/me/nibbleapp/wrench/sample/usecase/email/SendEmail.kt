@@ -6,5 +6,6 @@ import me.nibbleapp.wrench.type.Either
 import java.util.*
 
 fun sendEmail(recipients: List<String>): () -> Either<SendEmailError, Message> = {
+    println("Sending email")
     Either.Right(Message("Hola", Date().time))
 }
