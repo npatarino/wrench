@@ -9,3 +9,9 @@ fun sendEmail(recipients: List<String>): () -> Either<SendEmailError, Message> =
     println("Sending email")
     Either.Right(Message("Hola", Date().time))
 }
+
+
+fun removeEmail(recipients: List<String>): () -> Either<SendEmailError, Message> = {
+    println("Sending email")
+    Either.Right(Message("Hola", Date().time))
+}

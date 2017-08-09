@@ -4,8 +4,8 @@ import me.nibbleapp.wrench.type.Either
 
 class UseCase<Error, Result> {
 
-    fun bg(background: () -> Either<Error, Result>, delay: Long = 0): Completion<Error, Result> =
-            Completion(background, delay)
+    fun bg(background: () -> Either<Error, Result>, delay: Long = 0): Then<Error, Result> =
+            Then(background, delay)
 
 }
 

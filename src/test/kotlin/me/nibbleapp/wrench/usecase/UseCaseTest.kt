@@ -11,12 +11,12 @@ class UseCaseTest {
 //    @Test
 //    fun `Given an error, use case should return left either`() {
 //        val result = UseCase({Either.Left(Error.UnknownError())}, mainExecutor).execute()
-//        Assert.assertTrue(result.run().isLeft())
+//        Assert.assertTrue(result.handleResult().isLeft())
 //    }
 //
 //    @Test
 //    fun `Given a success, use case should return right either`() {
 //        val result = UseCase({Either.Right(true)}, mainExecutor).execute()
-//        Assert.assertTrue(result.run().isLeft())
+//        Assert.assertTrue(result.handleResult().isLeft())
 //    }
 }

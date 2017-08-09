@@ -29,7 +29,7 @@ fun main(args: Array<String>) {
 //            .fold(
 //                    { handleInvalidate(it) },
 //                    {
-//                        it.execute().run()
+//                        it.execute().handleResult()
 //                                .fold(
 //                                        { handleUseCaseError() },
 //                                        { handleUseCaseSuccess() }

@@ -1,5 +1,6 @@
 package me.nibbleapp.wrench.sample
 
+import kotlinx.coroutines.experimental.Deferred
 import me.nibbleapp.wrench.sample.error.SendEmailError
 import me.nibbleapp.wrench.sample.executor.DefaultExecutor
 import me.nibbleapp.wrench.sample.model.Message
@@ -11,30 +12,64 @@ fun main(args: Array<String>) {
 
     val recipients = listOf("npatarino@gmail.com", "npatarino@idealista.com")
     val delay: Long = 5000
-    val sleep: Long = 8000
+    val sleep: Long = 2000
 
-    val completion = UseCase<SendEmailError, Message>()
-            .bg(sendEmail(recipients), delay)
-            .and { it.map { Message(it.text.reversed(), it.date) } }
-            .and { it.map { Message(it.text.toUpperCase(), it.date) } }
-            .map { it.toModel() }
-
-    val result = completion.run({ ui(it) }, DefaultExecutor())
-
-    Thread.sleep(sleep)
-
-    if (result.isCompleted) {
-        println("Late")
-    } else {
-        println("Cancel")
-        result.cancel()
-    }
-
-    println("Finished")
+    example1(recipients, delay, sleep)
+    example2(recipients)
+    example3(recipients)
+    example4(recipients)
 
 }
 
-private fun ui(model: Either<SendEmailError, String>) {
+private fun example1(recipients: List<String>, delay: Long, sleep: Long) {
+    val useCase = UseCase<SendEmailError, Message>()
+            .bg(sendEmail(recipients), delay)
+            .and { reverseMessage(it) }
+            .and { upperCaseMessage(it) }
+            .map { it.toModel() }
+            .ui({ handleResult(it) })
+            .run(DefaultExecutor())
+
+    Thread.sleep(sleep)
+
+    if (useCase.isCompleted) {
+        println("Late to cancel")
+    } else {
+        println("Cancel")
+        useCase.cancel()
+    }
+}
+
+private fun example2(recipients: List<String>) {
+    UseCase<SendEmailError, Message>()
+            .bg(sendEmail(recipients))
+            .and { reverseMessage(it) }
+            .and { upperCaseMessage(it) }
+            .map { it.toModel() }
+            .ui({ handleResult(it) })
+            .run(DefaultExecutor())
+}
+
+private fun example3(recipients: List<String>) {
+    UseCase<SendEmailError, Message>()
+            .bg(sendEmail(recipients))
+            .run(DefaultExecutor())
+}
+
+private fun example4(recipients: List<String>) {
+    UseCase<SendEmailError, Message>()
+            .bg(sendEmail(recipients))
+            .map { it.toModel() }
+            .ui({ handleResult(it) })
+            .run(DefaultExecutor())
+}
+
+
+private fun upperCaseMessage(it: Either<SendEmailError, Message>) = it.map { Message(it.text.toUpperCase(), it.date) }
+
+private fun reverseMessage(it: Either<SendEmailError, Message>) = it.map { Message(it.text.reversed(), it.date) }
+
+private fun handleResult(model: Either<SendEmailError, String>) {
     model.fold(
             { handleSendEmailErrors(it) },
             { onSendEmailSuccess(it) }
@@ -53,4 +88,4 @@ private fun onSendEmailSuccess(message: String) {
     println("It worked ($message)")
 }
 
-fun Message.toModel() = text
+fun Message.toModel(): String = text
