@@ -1,6 +1,5 @@
 package me.nibbleapp.wrench.sample
 
-import kotlinx.coroutines.experimental.Deferred
 import me.nibbleapp.wrench.sample.error.SendEmailError
 import me.nibbleapp.wrench.sample.executor.DefaultExecutor
 import me.nibbleapp.wrench.sample.model.Message
