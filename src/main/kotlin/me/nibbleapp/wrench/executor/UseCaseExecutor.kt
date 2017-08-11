@@ -1,9 +1,11 @@
 package me.nibbleapp.wrench.executor
 
-import java.util.concurrent.ScheduledFuture
+import kotlinx.coroutines.experimental.Deferred
+import me.nibbleapp.wrench.type.Either
 
-interface UseCaseExecutor {
+interface UseCaseExecutor<Error, Result> {
 
-    fun <T> execute(background: () -> T, delay: Long = 0): ScheduledFuture<T>
+    fun execute(background: () -> Either<Error, Result>, ui: (Either<Error, Result>) -> Unit, delay: Long = 0)
+            : Deferred<Unit>
 
 }
