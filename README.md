@@ -4,6 +4,8 @@ WRENCH
 [![Build Status](https://travis-ci.org/npatarino/wrench.svg?branch=master)](https://travis-ci.org/npatarino/wrench)
 [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
+![Wrench logo][wrenchlogo]
+
 # Usage
 
 ## Use case
@@ -60,3 +62,5 @@ dependencies {
     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
     See the License for the specific language governing permissions and
     limitations under the License.
+
+[wrenchlogo]: ./assets/logo.png
