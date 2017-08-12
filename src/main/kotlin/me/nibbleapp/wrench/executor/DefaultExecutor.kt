@@ -20,5 +20,4 @@ class DefaultExecutor<Error, Result> : UseCaseExecutor<Error, Result> {
                 ui(background())
             }
 
-
 }

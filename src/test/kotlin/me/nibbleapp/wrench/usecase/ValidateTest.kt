@@ -1,19 +1,12 @@
 package me.nibbleapp.wrench.usecase
 
-import me.nibbleapp.wrench.sample.executor.DefaultExecutor
-import me.nibbleapp.wrench.type.Either
-import me.nibbleapp.wrench.type.Validation
-import org.junit.Assert
-import org.junit.Test
-import java.util.concurrent.Executors
-
 class ValidateTest {
-
-    private val oneValidValidation = listOf({ Validation.Valid })
-    private val oneInvalidValidation = listOf({ Validation.Invalid(UnknownError()) })
-    private val twoInvalidsValidation = listOf({ Validation.Invalid(UnknownError()) }, { Validation.Invalid(UnknownError()) })
-    private val twoValidValidation = listOf({ Validation.Valid }, { Validation.Valid })
-    private val validAndInvalidValidation = listOf({ Validation.Invalid(UnknownError()) }, { Validation.Valid })
+//
+//    private val oneValidValidation = listOf({ Validation.Valid })
+//    private val oneInvalidValidation = listOf({ Validation.Invalid(UnknownError()) })
+//    private val twoInvalidsValidation = listOf({ Validation.Invalid(UnknownError()) }, { Validation.Invalid(UnknownError()) })
+//    private val twoValidValidation = listOf({ Validation.Valid }, { Validation.Valid })
+//    private val validAndInvalidValidation = listOf({ Validation.Invalid(UnknownError()) }, { Validation.Valid })
 
 //    @Test
 //    fun `Given empty list, validation should execute the use case`() {
@@ -46,7 +39,7 @@ class ValidateTest {
 //    }
 //
 //    @Test
-//    fun `Given valids and invalid validations, validation should not execute the use case`() {
+//    fun `Given valids and invalids validations, validation should not execute the use case`() {
 //        val validated = Validate(validAndInvalidValidation, UseCase({ Either.Right(true) }, mainExecutor)).validate()
 //        Assert.assertTrue(validated.isLeft())
 //    }
