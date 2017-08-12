@@ -7,8 +7,9 @@ import me.nibbleapp.wrench.sample.model.Message
 import me.nibbleapp.wrench.sample.usecase.email.sendEmail
 import me.nibbleapp.wrench.type.Either
 import me.nibbleapp.wrench.usecase.UseCase
+import java.util.concurrent.ScheduledThreadPoolExecutor
 
-fun main(args: Array<String>) = runBlocking {
+fun main(args: Array<String>) {
 
     val recipients = listOf("npatarino@gmail.com", "npatarino@idealista.com")
     val delay: Long = 5000
@@ -22,7 +23,7 @@ fun main(args: Array<String>) = runBlocking {
 }
 
 private fun example1(recipients: List<String>, delay: Long, sleep: Long) = runBlocking {
-    val useCaseExecutor = DefaultExecutor()
+    val useCaseExecutor = DefaultExecutor(ScheduledThreadPoolExecutor(4))
     val useCase = UseCase<SendEmailError, Message>()
             .bg(sendEmail(recipients), delay)
             .then { reverseMessage(it) }
@@ -33,14 +34,14 @@ private fun example1(recipients: List<String>, delay: Long, sleep: Long) = runBl
 
     Thread.sleep(sleep)
 
-    if (useCase.isCompleted) {
+    if (useCase.isDone) {
         println("Late to cancel")
     } else {
         println("Cancel")
-        useCase.cancel()
+        useCase.cancel(true)
     }
 
-    useCase.join()
+    useCase.get()
 }
 
 private fun example2(recipients: List<String>) = runBlocking {
@@ -50,16 +51,16 @@ private fun example2(recipients: List<String>) = runBlocking {
             .then { upperCaseMessage(it) }
             .map { it.toModel() }
             .ui({ handleResult(it) })
-            .run(DefaultExecutor())
-    useCase.join()
+            .run(DefaultExecutor(ScheduledThreadPoolExecutor(4)))
+    useCase.get()
 
 }
 
 private fun example3(recipients: List<String>) = runBlocking {
     val useCase = UseCase<SendEmailError, Message>()
             .bg(sendEmail(recipients))
-            .run(DefaultExecutor())
-    useCase.join()
+            .run(DefaultExecutor(ScheduledThreadPoolExecutor(4)))
+    useCase.get()
 }
 
 private fun example4(recipients: List<String>) = runBlocking {
@@ -67,8 +68,8 @@ private fun example4(recipients: List<String>) = runBlocking {
             .bg(sendEmail(recipients))
             .map { it.toModel() }
             .ui({ handleResult(it) })
-            .run(DefaultExecutor())
-    useCase.join()
+            .run(DefaultExecutor(ScheduledThreadPoolExecutor(4)))
+    useCase.get()
 }
 
 

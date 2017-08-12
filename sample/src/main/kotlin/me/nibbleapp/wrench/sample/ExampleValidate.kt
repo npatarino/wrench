@@ -10,11 +10,12 @@ import me.nibbleapp.wrench.sample.usecase.email.validateEmail
 import me.nibbleapp.wrench.type.Either
 import me.nibbleapp.wrench.usecase.UseCase
 import me.nibbleapp.wrench.validation.Validate
+import java.util.concurrent.ScheduledThreadPoolExecutor
 
 
-fun main(args: Array<String>) = runBlocking<Unit> {
+fun main(args: Array<String>) {
 
-    val recipients = listOf("npatarino@gmail.com", "npatarino@idealista.com")
+    val recipients = listOf("npatarino", "npatarino@idealista.com")
 
     val useCase = UseCase<SendEmailError, Message>()
             .bg(sendEmail(recipients))
@@ -23,7 +24,7 @@ fun main(args: Array<String>) = runBlocking<Unit> {
             .map { it.toModel() }
             .ui({ handleResult(it) })
 
-    val executor = DefaultExecutor()
+    val executor = DefaultExecutor(ScheduledThreadPoolExecutor(4))
     val deferred = Validate<FormError, String>()
             .add { validateEmail("npatarino@gmail.com") }
             .add { validateEmail("npatarino@idealista.com") }
@@ -31,7 +32,7 @@ fun main(args: Array<String>) = runBlocking<Unit> {
             .invalids { handleInvalidate(it) }
             .valid { println("Valid") }
             .run(executor)
-    deferred?.join()
+    deferred?.get()
 }
 
 private fun handleResult(model: Either<SendEmailError, String>) {

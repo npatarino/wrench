@@ -1,8 +1,8 @@
 package me.nibbleapp.wrench.usecase
 
-import kotlinx.coroutines.experimental.Deferred
 import me.nibbleapp.wrench.executor.UseCaseExecutor
 import me.nibbleapp.wrench.type.Either
+import java.util.concurrent.Future
 
 class Then<Error, Result> internal constructor(private val function: () -> Either<Error, Result>,
                                                private val delay: Long = 0) {
@@ -18,7 +18,7 @@ class Then<Error, Result> internal constructor(private val function: () -> Eithe
     fun ui(ui: (Either<Error, Result>) -> Unit = {}): UseCaseExecutable<Error, Result> =
             UseCaseExecutable(function, ui, delay)
 
-    fun run(useCaseExecutor: UseCaseExecutor): Deferred<Unit> =
+    fun run(useCaseExecutor: UseCaseExecutor): Future<Unit> =
             useCaseExecutor.execute(function, {}, delay)
 
 

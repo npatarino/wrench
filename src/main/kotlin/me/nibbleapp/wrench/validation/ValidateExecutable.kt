@@ -1,9 +1,9 @@
 package me.nibbleapp.wrench.validation
 
-import kotlinx.coroutines.experimental.Deferred
 import me.nibbleapp.wrench.executor.UseCaseExecutor
 import me.nibbleapp.wrench.type.Either
 import me.nibbleapp.wrench.usecase.UseCaseExecutable
+import java.util.concurrent.Future
 
 class ValidateExecutable<Error, T, UseCaseError, UseCaseResult>(
         private val validations: MutableList<() -> Either<Error, T>>,
@@ -17,7 +17,7 @@ class ValidateExecutable<Error, T, UseCaseError, UseCaseResult>(
     fun valid(onValid: () -> Unit): ValidateExecutable<Error, T, UseCaseError, UseCaseResult> =
             ValidateExecutable(validations, onInvalidFunction, onValid, useCaseExecutable)
 
-    fun run(executor: UseCaseExecutor): Deferred<Unit>? {
+    fun run(executor: UseCaseExecutor): Future<Unit>? {
 
         val hasFailures = validations.map {
             it()
