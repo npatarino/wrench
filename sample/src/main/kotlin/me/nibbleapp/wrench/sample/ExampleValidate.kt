@@ -23,13 +23,14 @@ fun main(args: Array<String>) = runBlocking<Unit> {
             .map { it.toModel() }
             .ui({ handleResult(it) })
 
+    val executor = DefaultExecutor<SendEmailError, String>()
     val deferred = Validate<FormError, String>()
             .add { validateEmail("npatarino@gmail.com") }
             .add { validateEmail("npatarino@idealista.com") }
             .with(useCase)
             .invalids { handleInvalidate(it) }
             .valid { println("Valid") }
-            .run(DefaultExecutor())
+            .run(executor)
     deferred?.join()
 }
 
