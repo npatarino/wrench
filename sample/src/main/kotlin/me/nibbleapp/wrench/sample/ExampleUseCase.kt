@@ -22,13 +22,14 @@ fun main(args: Array<String>) = runBlocking {
 }
 
 private fun example1(recipients: List<String>, delay: Long, sleep: Long) = runBlocking {
+    val useCaseExecutor = DefaultExecutor()
     val useCase = UseCase<SendEmailError, Message>()
             .bg(sendEmail(recipients), delay)
             .then { reverseMessage(it) }
             .then { upperCaseMessage(it) }
             .map { it.toModel() }
             .ui({ handleResult(it) })
-            .run(DefaultExecutor())
+            .run(useCaseExecutor)
 
     Thread.sleep(sleep)
 

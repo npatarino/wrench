@@ -18,7 +18,7 @@ class Then<Error, Result> internal constructor(private val function: () -> Eithe
     fun ui(ui: (Either<Error, Result>) -> Unit = {}): UseCaseExecutable<Error, Result> =
             UseCaseExecutable(function, ui, delay)
 
-    fun run(useCaseExecutor: UseCaseExecutor<Error, Result>): Deferred<Unit> =
+    fun run(useCaseExecutor: UseCaseExecutor): Deferred<Unit> =
             useCaseExecutor.execute(function, {}, delay)
 
 

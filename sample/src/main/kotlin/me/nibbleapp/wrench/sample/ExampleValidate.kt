@@ -23,7 +23,7 @@ fun main(args: Array<String>) = runBlocking<Unit> {
             .map { it.toModel() }
             .ui({ handleResult(it) })
 
-    val executor = DefaultExecutor<SendEmailError, String>()
+    val executor = DefaultExecutor()
     val deferred = Validate<FormError, String>()
             .add { validateEmail("npatarino@gmail.com") }
             .add { validateEmail("npatarino@idealista.com") }
