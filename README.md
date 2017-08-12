@@ -4,6 +4,24 @@ WRENCH
 [![Build Status](https://travis-ci.org/npatarino/wrench.svg?branch=master)](https://travis-ci.org/npatarino/wrench)
 [![Hex.pm](https://img.shields.io/hexpm/l/plug.svg)](http://www.apache.org/licenses/LICENSE-2.0)
 
+# Usage
+
+## Use case
+
+```kotlin
+UseCase<SendEmailError, Message>()
+        .bg(sendEmail(recipients), delay)
+        .then { reverseMessage(it) }
+        .then { upperCaseMessage(it) }
+        .map { it.toModel() }
+        .ui({ handleResult(it) })
+        .run(DefaultExecutor())
+```
+
+## Validation
+
+## Navigator
+
 # Add it to your project
 
 Use it at your how risk, the actual state is not production ready.
