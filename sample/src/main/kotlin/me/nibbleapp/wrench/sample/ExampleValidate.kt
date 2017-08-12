@@ -18,15 +18,16 @@ fun main(args: Array<String>) = runBlocking<Unit> {
 
     val useCase = UseCase<SendEmailError, Message>()
             .bg(sendEmail(recipients))
-            .and { it.map { Message(it.text.reversed(), it.date) } }
-            .and { it.map { Message(it.text.toUpperCase(), it.date) } }
+            .then { it.map { Message(it.text.reversed(), it.date) } }
+            .then { it.map { Message(it.text.toUpperCase(), it.date) } }
             .map { it.toModel() }
             .ui({ handleResult(it) })
 
     val deferred = Validate<EmailError, String>()
-            .add { validateEmail("npatarin") }
-            .add { validateEmail("@idealista.com") }
+            .add { validateEmail("npatarino@gmail.com") }
+            .add { validateEmail("npatarino@idealista.com") }
             .with(useCase)
+            .invalids { handleInvalidate(it) }
             .valid { println("Valid") }
             .run(DefaultExecutor())
     deferred?.join()

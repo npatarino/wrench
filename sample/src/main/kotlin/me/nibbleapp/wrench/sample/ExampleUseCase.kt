@@ -24,8 +24,8 @@ fun main(args: Array<String>) = runBlocking {
 private fun example1(recipients: List<String>, delay: Long, sleep: Long) = runBlocking {
     val useCase = UseCase<SendEmailError, Message>()
             .bg(sendEmail(recipients), delay)
-            .and { reverseMessage(it) }
-            .and { upperCaseMessage(it) }
+            .then { reverseMessage(it) }
+            .then { upperCaseMessage(it) }
             .map { it.toModel() }
             .ui({ handleResult(it) })
             .run(DefaultExecutor())
@@ -45,8 +45,8 @@ private fun example1(recipients: List<String>, delay: Long, sleep: Long) = runBl
 private fun example2(recipients: List<String>) = runBlocking {
     val useCase = UseCase<SendEmailError, Message>()
             .bg(sendEmail(recipients))
-            .and { reverseMessage(it) }
-            .and { upperCaseMessage(it) }
+            .then { reverseMessage(it) }
+            .then { upperCaseMessage(it) }
             .map { it.toModel() }
             .ui({ handleResult(it) })
             .run(DefaultExecutor())

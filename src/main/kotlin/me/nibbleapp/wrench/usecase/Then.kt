@@ -7,7 +7,7 @@ import me.nibbleapp.wrench.type.Either
 class Then<Error, Result> internal constructor(private val function: () -> Either<Error, Result>,
                                                private val delay: Long = 0) {
 
-    infix fun <Mapped> and(f: (Either<Error, Result>) -> Either<Error, Mapped>): Then<Error, Mapped> =
+    infix fun <Mapped> then(f: (Either<Error, Result>) -> Either<Error, Mapped>): Then<Error, Mapped> =
             Then({ f(function.invoke()) }, delay)
 
 
