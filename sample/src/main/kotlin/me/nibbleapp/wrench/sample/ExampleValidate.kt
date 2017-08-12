@@ -1,7 +1,7 @@
 package me.nibbleapp.wrench.sample
 
 import kotlinx.coroutines.experimental.runBlocking
-import me.nibbleapp.wrench.sample.error.EmailError
+import me.nibbleapp.wrench.sample.error.FormError
 import me.nibbleapp.wrench.sample.error.SendEmailError
 import me.nibbleapp.wrench.sample.executor.DefaultExecutor
 import me.nibbleapp.wrench.sample.model.Message
@@ -23,7 +23,7 @@ fun main(args: Array<String>) = runBlocking<Unit> {
             .map { it.toModel() }
             .ui({ handleResult(it) })
 
-    val deferred = Validate<EmailError, String>()
+    val deferred = Validate<FormError, String>()
             .add { validateEmail("npatarino@gmail.com") }
             .add { validateEmail("npatarino@idealista.com") }
             .with(useCase)
@@ -52,10 +52,10 @@ private fun onSendEmailSuccess(message: String) {
     println("It worked ($message)")
 }
 
-private fun handleInvalidate(it: EmailError): Unit = when (it) {
-    is EmailError.Empty -> println("\t\"${it.email}\" is empty")
-    is EmailError.Invalid -> println("\t\"${it.email}\" is invalid")
-    is EmailError.TooLong -> println("\t\"${it.email}\" is too long")
-    is EmailError.TooShort -> println("\t\"${it.email}\" is too short")
+private fun handleInvalidate(it: FormError): Unit = when (it) {
+    is FormError.Empty -> println("\t\"${it.email}\" is empty")
+    is FormError.Invalid -> println("\t\"${it.email}\" is invalid")
+    is FormError.TooLong -> println("\t\"${it.email}\" is too long")
+    is FormError.TooShort -> println("\t\"${it.email}\" is too short")
 }
 

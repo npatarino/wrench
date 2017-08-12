@@ -1,6 +1,6 @@
 package me.nibbleapp.wrench.sample.usecase.email
 
-import me.nibbleapp.wrench.sample.error.EmailError
+import me.nibbleapp.wrench.sample.error.FormError
 import me.nibbleapp.wrench.sample.error.SendEmailError
 import me.nibbleapp.wrench.sample.model.Message
 import me.nibbleapp.wrench.type.Either
@@ -21,10 +21,10 @@ fun sendEmail(recipients: List<String>): () -> Either<SendEmailError, Message> =
     Either.Right(Message("Hola", Date().time))
 }
 
-fun validateEmail(email: String): Either<EmailError, String> = when {
-    email.isBlank() -> Either.Left(EmailError.Empty(email))
-    isTooLong(email) -> Either.Left(EmailError.TooLong(email))
-    isTooShort(email) -> Either.Left(EmailError.TooShort(email))
-    isInvalid(email) -> Either.Left(EmailError.Invalid(email))
+fun validateEmail(email: String): Either<FormError, String> = when {
+    email.isBlank() -> Either.Left(FormError.Empty(email))
+    isTooLong(email) -> Either.Left(FormError.TooLong(email))
+    isTooShort(email) -> Either.Left(FormError.TooShort(email))
+    isInvalid(email) -> Either.Left(FormError.Invalid(email))
     else -> Either.Right(email)
 }
