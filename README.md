@@ -6,7 +6,7 @@ WRENCH
 
 ![Wrench logo][wrenchlogo]
 
-Wrench is Kotlin framework used at [Idealista][idealista labs] to develop applications providing some datatypes and abstractions to work with MVP and Clean Architecture.
+Wrench is Kotlin framework to develop applications providing some datatypes and abstractions to work with MVP and Clean Architecture.
 
 # Usage
 
