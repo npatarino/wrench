@@ -5,15 +5,18 @@ sealed class Either<out L, out R> {
     data class Left<out T>(val value: T) : Either<T, Nothing>() {
         override fun isRight(): Boolean = false
         override fun isLeft(): Boolean = true
+        override fun get(): Nothing = throw NoSuchElementException("Either.Right.value on Left")
     }
 
     data class Right<out T>(val value: T) : Either<Nothing, T>() {
         override fun isRight(): Boolean = true
         override fun isLeft(): Boolean = false
+        override fun get(): T = value
     }
 
     abstract fun isLeft(): Boolean
     abstract fun isRight(): Boolean
+    abstract fun get(): R
 
     /**
      * Example:
