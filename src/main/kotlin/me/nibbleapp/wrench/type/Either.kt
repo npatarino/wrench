@@ -67,8 +67,7 @@ sealed class Either<out L, out R> {
      * Left(error).getOrElse("undefined")  // Result: "undefined"
      * ```
      */
-    inline fun <B> Either<*, B>.getOrElse(default: () -> B): B =
-            fold({ default() }, { it })
+    fun <B> Either<*, B>.getOrElse(default: () -> B): B = fold({ default() }, { it })
 }
 
 
