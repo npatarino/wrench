@@ -17,7 +17,7 @@ class ValidateExecutable<Error, T, UseCaseError, UseCaseResult>(
     fun valid(onValid: () -> Unit): ValidateExecutable<Error, T, UseCaseError, UseCaseResult> =
             ValidateExecutable(validations, onInvalidFunction, onValid, useCaseExecutable)
 
-    fun run(executor: UseCaseExecutor): Future<Unit>? {
+    fun run(executor: UseCaseExecutor): Unit? {
 
         val hasFailures = validations.map {
             it()

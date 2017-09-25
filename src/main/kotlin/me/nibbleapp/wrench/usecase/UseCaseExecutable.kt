@@ -8,7 +8,7 @@ class UseCaseExecutable<Error, Result> internal constructor(private val function
                                                             private val ui: (Either<Error, Result>) -> Unit,
                                                             private val delay: Long) {
 
-    fun run(useCaseExecutor: UseCaseExecutor): Future<Unit> =
+    fun run(useCaseExecutor: UseCaseExecutor) =
             useCaseExecutor.execute(function, ui, delay)
 
 
