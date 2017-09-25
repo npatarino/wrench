@@ -7,6 +7,6 @@ interface UseCaseExecutor {
 
     fun <Error, Result> execute(background: () -> Either<Error, Result>,
                                 ui: (Either<Error, Result>) -> Unit,
-                                delayed: Long = 0): Future<Unit>
+                                delayed: Long = 0): Unit
 
 }
