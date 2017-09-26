@@ -45,7 +45,7 @@ Add the dependency into project `build.gradle`
 
 ```groovy
 dependencies {
-    compile 'com.github.npatarino:wrench:0.15'
+    compile 'com.github.npatarino:wrench:0.26'
 }
 ```
 
