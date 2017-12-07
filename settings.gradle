@@ -1,2 +1,3 @@
 rootProject.name = 'wrench'
+include 'wrench-sample'
 
