@@ -71,6 +71,10 @@ sealed class Either<out L, out R> {
      * ```
      */
     fun <B> Either<*, B>.getOrElse(default: () -> B): B = fold({ default() }, { it })
+
+    fun <L, R, S> Either<L, R>.flatMap(f: (R) -> Either<L, S>) : Either<L, S> = when(this) {
+        is Either.Left -> Either.Left(value)
+        is Either.Right -> f(value)
+    }
+
 }
-
-
