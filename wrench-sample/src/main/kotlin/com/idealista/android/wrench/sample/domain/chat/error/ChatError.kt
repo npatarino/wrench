@@ -1,4 +1,4 @@
-package com.idealista.android.wrench.sample.usecase.chat.error
+package com.idealista.android.wrench.sample.domain.chat.error
 
 sealed class ChatError {
 

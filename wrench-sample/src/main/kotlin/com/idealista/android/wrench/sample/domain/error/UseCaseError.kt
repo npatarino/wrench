@@ -1,4 +1,4 @@
-package com.idealista.android.wrench.sample.error
+package com.idealista.android.wrench.sample.domain.error
 
 sealed class UseCaseError {
 

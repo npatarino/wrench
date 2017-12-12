@@ -1,6 +1,6 @@
-package com.idealista.android.wrench.sample.usecase.chat.error
+package com.idealista.android.wrench.sample.domain.chat.error
 
-import com.idealista.android.wrench.sample.error.UseCaseError
+import com.idealista.android.wrench.sample.domain.error.UseCaseError
 
 sealed class UseCaseChatError {
 
