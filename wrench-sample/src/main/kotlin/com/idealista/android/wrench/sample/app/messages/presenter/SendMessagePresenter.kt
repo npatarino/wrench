@@ -11,22 +11,23 @@ import com.idealista.android.wrench.usecase.UseCase
 import com.idealista.android.wrench.usecase.UseCaseExecutable
 
 class SendMessagePresenter(private val view: SendMessageView,
-                           private val function: (Message) -> Either<UseCaseChatError, Message>,
-                           private val mapper: (Message) -> String,
-                           private val useCaseExecutor: UseCaseExecutor) {
+                                    private val function: (Message) -> Either<UseCaseChatError, Message>,
+                                    private val mapper: (Message) -> String,
+                                    private val useCaseExecutor: UseCaseExecutor) {
 
     companion object {
         val useCaseDelayInMillis = 5 * 1000L
     }
 
-    private lateinit var useCase: UseCaseExecutable<UseCaseChatError, String>
+    var useCase: UseCaseExecutable<UseCaseChatError, String>? = null
 
     fun onSendClicked(message: Message) {
+        useCase?.cancel()
         useCase = UseCase<UseCaseChatError, Message>()
                 .bg({ function(message) }, useCaseDelayInMillis)
                 .map { mapper(it) }
                 .ui({ it.fold({ handleError(it) }, { handleSuccess(it) }) })
-        useCase.run(useCaseExecutor)
+        useCase?.run(useCaseExecutor)
     }
 
     private fun handleSuccess(message: String) {
