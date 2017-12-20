@@ -16,7 +16,7 @@ class SendMessagePresenter(private val view: SendMessageView,
                            private val useCaseExecutor: UseCaseExecutor) {
 
     companion object {
-        val useCaseDelayInMillis = 5 * 1000L
+        val useCaseDelayInMillis = 0 * 1000L
     }
 
     var useCase: UseCaseExecutable<UseCaseChatError, String>? = null
@@ -36,12 +36,12 @@ class SendMessagePresenter(private val view: SendMessageView,
 
     private fun handleError(error: UseCaseChatError): Unit = when (error) {
         is UseCaseChatError.UseCase -> when (error.useCaseError) {
-            UseCaseError.Network -> view.showMessage("Network error!")
+            UseCaseError.Network -> view.showErrorMessage("Network error!")
         }
 
         is UseCaseChatError.Chat -> when (error.chatError) {
-            ChatError.ConversationExpired -> view.showMessage("Network error!")
-            ChatError.ReceiverNotFound -> view.showMessage("Network error!")
+            ChatError.ConversationExpired -> view.showErrorMessage("Network error!")
+            ChatError.ReceiverNotFound -> view.showErrorMessage("Network error!")
         }
     }
 
