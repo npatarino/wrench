@@ -10,14 +10,14 @@ import com.idealista.android.wrench.type.Either
 import com.idealista.android.wrench.usecase.UseCase
 
 class SendMessagePresenter(private val view: SendMessageView,
-                           private val function: (Message) -> Either<UseCaseChatError, Message>,
-                           private val mapper: (Message) -> String,
+                           private val sendMessageFunction: (Message) -> Either<UseCaseChatError, Message>,
+                           private val messageMapper: (Message) -> String,
                            private val useCaseExecutor: UseCaseExecutor) {
 
     fun onSendClicked(message: Message) {
         val useCase = UseCase<UseCaseChatError, Message>()
-                .bg({ function(message) })
-                .map { mapper(it) }
+                .bg({ sendMessageFunction(message) })
+                .map { messageMapper(it) }
                 .ui({ it.fold({ handleError(it) }, { handleSuccess(it) }) })
         useCase.run(useCaseExecutor)
     }

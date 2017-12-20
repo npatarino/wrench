@@ -16,7 +16,7 @@ class SendMessageActivity : SendMessageView {
 
     fun onCreate() {
 
-        val sendMessagePresenter = SendMessagePresenter(this, sendMessage, messageMapper, useCaseExecutor)
+        val sendMessagePresenter = SendMessagePresenter(this, sendMessage(), messageMapper, useCaseExecutor)
 
         val message = Message("Vamos, vamos Argentina", "npatarino", Date().time)
 
