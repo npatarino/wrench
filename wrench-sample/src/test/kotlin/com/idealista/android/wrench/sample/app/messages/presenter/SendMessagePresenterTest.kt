@@ -23,9 +23,9 @@ class SendMessagePresenterTest {
     @Test
     fun `given a successful sendMessage function when call onSendClicked it should call view#showMessage`() {
         whenever(sendMessageFunction(any())).then { Either.Right(messageValid) }
-
         val viewMocked = mock<SendMessageView>()
         val sendMessagePresenter = SendMessagePresenter(viewMocked, sendMessageFunction, messageMapper, useCaseExecutor)
+
         sendMessagePresenter.onSendClicked(messageValid)
 
         then(viewMocked).should().showMessage(any())
@@ -34,9 +34,9 @@ class SendMessagePresenterTest {
     @Test
     fun `given a failure sendMessage function when call onSendClicked it should call view#showErrorMessage`() {
         whenever(sendMessageFunction(any())).then { Either.Left(UseCaseChatError.Chat(ChatError.ReceiverNotFound)) }
-
         val viewMocked = mock<SendMessageView>()
         val sendMessagePresenter = SendMessagePresenter(viewMocked, sendMessageFunction, messageMapper, useCaseExecutor)
+
         sendMessagePresenter.onSendClicked(messageValid)
 
         then(viewMocked).should().showErrorMessage(any())

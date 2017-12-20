@@ -8,7 +8,9 @@ class ChatServiceTest {
 
     @Test
     fun `given a sendMessage function when it's invoked it should return Right(message)`() {
-        val result = sendMessage().invoke(messageValid)
+        val sendMessage = sendMessage()
+        
+        val result = sendMessage(messageValid)
 
         assertEquals(messageValid, result.get())
     }
