@@ -21,6 +21,7 @@ class SendMessageActivity : SendMessageView {
         val message = Message("Vamos, vamos Argentina", "npatarino", Date().time)
 
         sendMessagePresenter.onSendClicked(message)
+        sendMessagePresenter.onSendClicked(message)
     }
 
     override fun showMessage(message: String) {

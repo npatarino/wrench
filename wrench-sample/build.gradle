@@ -2,7 +2,8 @@ group 'com.idealista.android'
 version '1.0-SNAPSHOT'
 
 buildscript {
-    ext.kotlin_version = '1.1.51'
+    ext.kotlin_version = '1.2.0'
+    ext.coroutines_version = '0.20'
     ext.junit_version = '4.12'
     ext.mockito_version = '2.13.0'
 
@@ -22,6 +23,8 @@ repositories {
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
+    compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+
     testCompile "junit:junit:$junit_version"
     testCompile "org.mockito:mockito-core:$junit_version"
 }

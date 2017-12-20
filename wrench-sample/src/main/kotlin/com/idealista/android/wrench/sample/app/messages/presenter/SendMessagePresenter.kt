@@ -8,18 +8,26 @@ import com.idealista.android.wrench.sample.domain.chat.model.Message
 import com.idealista.android.wrench.sample.domain.error.UseCaseError
 import com.idealista.android.wrench.type.Either
 import com.idealista.android.wrench.usecase.UseCase
+import com.idealista.android.wrench.usecase.UseCaseExecutable
 
 class SendMessagePresenter(private val view: SendMessageView,
                            private val sendMessageFunction: (Message) -> Either<UseCaseChatError, Message>,
                            private val messageMapper: (Message) -> String,
                            private val useCaseExecutor: UseCaseExecutor) {
 
+    companion object {
+        val useCaseDelayInMillis = 5 * 1000L
+    }
+
+    var useCase: UseCaseExecutable<UseCaseChatError, String>? = null
+
     fun onSendClicked(message: Message) {
-        val useCase = UseCase<UseCaseChatError, Message>()
-                .bg({ sendMessageFunction(message) })
+        useCase?.cancel()
+        useCase = UseCase<UseCaseChatError, Message>()
+                .bg({ sendMessageFunction(message) }, useCaseDelayInMillis)
                 .map { messageMapper(it) }
                 .ui({ it.fold({ handleError(it) }, { handleSuccess(it) }) })
-        useCase.run(useCaseExecutor)
+        useCase?.run(useCaseExecutor)
     }
 
     private fun handleSuccess(message: String) {
