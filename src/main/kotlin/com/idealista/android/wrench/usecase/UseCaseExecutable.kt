@@ -8,16 +8,6 @@ class UseCaseExecutable<Error, Result> internal constructor(private val function
                                                             private val ui: (Either<Error, Result>) -> Unit,
                                                             private val delay: Long) {
 
-
-    private var job: Job? = null
-
-    fun run(useCaseExecutor: UseCaseExecutor) {
-        job = useCaseExecutor.execute(function, ui, delay)
-    }
-
-    fun cancel() {
-        job?.cancel()
-    }
-
+    fun run(useCaseExecutor: UseCaseExecutor) = useCaseExecutor.execute(function, ui, delay)
 
 }

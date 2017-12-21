@@ -8,7 +8,7 @@ import com.idealista.android.wrench.sample.domain.chat.model.Message
 import com.idealista.android.wrench.sample.domain.error.UseCaseError
 import com.idealista.android.wrench.type.Either
 import com.idealista.android.wrench.usecase.UseCase
-import com.idealista.android.wrench.usecase.UseCaseExecutable
+import kotlinx.coroutines.experimental.Job
 
 class SendMessagePresenter(private val view: SendMessageView,
                            private val sendMessageFunction: (Message) -> Either<UseCaseChatError, Message>,
@@ -19,15 +19,15 @@ class SendMessagePresenter(private val view: SendMessageView,
         val useCaseDelayInMillis = 5 * 1000L
     }
 
-    var useCase: UseCaseExecutable<UseCaseChatError, String>? = null
+    var sendMessageJob: Job = Job()
 
     fun onSendClicked(message: Message) {
-        useCase?.cancel()
-        useCase = UseCase<UseCaseChatError, Message>()
+        sendMessageJob.cancel()
+        sendMessageJob = UseCase<UseCaseChatError, Message>()
                 .bg({ sendMessageFunction(message) })
                 .map { messageMapper(it) }
                 .ui({ it.fold({ handleError(it) }, { handleSuccess(it) }) })
-        useCase?.run(useCaseExecutor)
+                .run(useCaseExecutor)
     }
 
     private fun handleSuccess(message: String) {
