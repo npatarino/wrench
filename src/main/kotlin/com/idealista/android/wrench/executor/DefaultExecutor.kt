@@ -6,17 +6,11 @@ import java.util.concurrent.ScheduledExecutorService
 
 class DefaultExecutor : UseCaseExecutor {
 
-    private lateinit var job: Job
-
     override fun <Error, Result> execute(background: () -> Either<Error, Result>,
                                          ui: (Either<Error, Result>) -> Unit,
-                                         delayed: Long): Job {
-
-        job = launch {
-            delay(delayed)
-            ui(background())
-        }
-        return job
+                                         delayed: Long): Job = launch {
+        delay(delayed)
+        ui(background())
     }
 
 }

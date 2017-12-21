@@ -6,19 +6,15 @@ import java.util.concurrent.ScheduledExecutorService
 
 class SyncExecutor : UseCaseExecutor {
 
-    private lateinit var job: Job
-
     override fun <Error, Result> execute(background: () -> Either<Error, Result>,
                                          ui: (Either<Error, Result>) -> Unit,
-                                         delayed: Long): Job {
-        runBlocking {
-            job = launch {
-                delay(delayed)
-                ui(background())
-            }
-            job.join()
+                                         delayed: Long): Job = runBlocking {
+        val job = launch {
+            delay(delayed)
+            ui(background())
         }
-        return job
+        job.join()
+        job
     }
 
 }
