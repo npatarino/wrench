@@ -7,5 +7,5 @@ interface UseCaseExecutor {
 
     fun <Error, Result> execute(background: () -> Either<Error, Result>,
                                         ui: (Either<Error, Result>) -> Unit,
-                                        delayed: Long = 0): Job
+                                        delayed: Long = 0): CancellationToken
 }

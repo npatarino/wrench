@@ -1,6 +1,6 @@
 package com.idealista.android.wrench.sample.app.messages.presenter
 
-import com.idealista.android.wrench.executor.SyncExecutor
+import com.idealista.android.wrench.executor.coroutine.SyncCoroutineExecutor
 import com.idealista.android.wrench.sample.app.messages.view.SendMessageView
 import com.idealista.android.wrench.sample.app.model.mapper.messageMapper
 import com.idealista.android.wrench.sample.domain.chat.error.ChatError
@@ -13,7 +13,7 @@ import org.junit.Test
 
 class SendMessagePresenterTest {
 
-    private val useCaseExecutor = SyncExecutor()
+    private val useCaseExecutor = SyncCoroutineExecutor()
 
     private val sendMessageFunction = mock<(Message) -> Either<UseCaseChatError, Message>>()
 

@@ -1,5 +1,6 @@
 package com.idealista.android.wrench.sample.app.messages.presenter
 
+import com.idealista.android.wrench.executor.CancellationToken
 import com.idealista.android.wrench.executor.UseCaseExecutor
 import com.idealista.android.wrench.sample.app.messages.view.SendMessageView
 import com.idealista.android.wrench.sample.domain.chat.error.ChatError
@@ -8,7 +9,6 @@ import com.idealista.android.wrench.sample.domain.chat.model.Message
 import com.idealista.android.wrench.sample.domain.error.UseCaseError
 import com.idealista.android.wrench.type.Either
 import com.idealista.android.wrench.usecase.UseCase
-import kotlinx.coroutines.experimental.Job
 
 class SendMessagePresenter(private val view: SendMessageView,
                            private val sendMessageFunction: (Message) -> Either<UseCaseChatError, Message>,
@@ -19,7 +19,7 @@ class SendMessagePresenter(private val view: SendMessageView,
         val useCaseDelayInMillis = 5 * 1000L
     }
 
-    var sendMessageJob: Job = Job()
+    var sendMessageJob: CancellationToken = CancellationToken.empty
 
     fun onSendClicked(message: Message) {
         sendMessageJob.cancel()
