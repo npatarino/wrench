@@ -8,10 +8,7 @@ import com.idealista.android.wrench.sample.domain.chat.error.UseCaseChatError
 import com.idealista.android.wrench.sample.domain.chat.model.Message
 import com.idealista.android.wrench.sample.mothers.MessageObjectMother.Companion.messageValid
 import com.idealista.android.wrench.type.Either
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.then
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockito_kotlin.*
 import org.junit.Test
 
 class SendMessagePresenterTest {

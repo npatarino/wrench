@@ -3,9 +3,11 @@ package com.idealista.android.wrench.sample.app.messages.view
 import com.idealista.android.wrench.executor.DefaultExecutor
 import com.idealista.android.wrench.sample.app.messages.presenter.SendMessagePresenter
 import com.idealista.android.wrench.sample.app.model.mapper.messageMapper
+import com.idealista.android.wrench.sample.data.repository.datasource.NetworkDataSource
 import com.idealista.android.wrench.sample.domain.chat.model.Message
 import com.idealista.android.wrench.sample.domain.chat.model.mapper.toModel
 import com.idealista.android.wrench.sample.domain.chat.sendMessage
+import com.idealista.android.wrench.sample.domain.repository.ChatRepository
 import java.util.*
 import java.util.concurrent.ScheduledThreadPoolExecutor
 
@@ -13,10 +15,14 @@ import java.util.concurrent.ScheduledThreadPoolExecutor
 class SendMessageActivity : SendMessageView {
 
     private val useCaseExecutor = DefaultExecutor()
+    private val chatRepository = ChatRepository(NetworkDataSource())
 
     fun onCreate() {
 
-        val sendMessagePresenter = SendMessagePresenter(this, sendMessage(), messageMapper, useCaseExecutor)
+        val sendMessagePresenter = SendMessagePresenter(this,
+                sendMessage(chatRepository),
+                messageMapper,
+                useCaseExecutor)
 
         val message = Message("Vamos, vamos Argentina", "npatarino", Date().time)
 

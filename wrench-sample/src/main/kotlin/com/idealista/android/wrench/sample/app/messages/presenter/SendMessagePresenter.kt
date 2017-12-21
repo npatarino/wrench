@@ -16,7 +16,7 @@ class SendMessagePresenter(private val view: SendMessageView,
                            private val useCaseExecutor: UseCaseExecutor) {
 
     companion object {
-        val useCaseDelayInMillis = 0 * 1000L
+        val useCaseDelayInMillis = 5 * 1000L
     }
 
     var useCase: UseCaseExecutable<UseCaseChatError, String>? = null
@@ -24,7 +24,7 @@ class SendMessagePresenter(private val view: SendMessageView,
     fun onSendClicked(message: Message) {
         useCase?.cancel()
         useCase = UseCase<UseCaseChatError, Message>()
-                .bg({ sendMessageFunction(message) }, useCaseDelayInMillis)
+                .bg({ sendMessageFunction(message) })
                 .map { messageMapper(it) }
                 .ui({ it.fold({ handleError(it) }, { handleSuccess(it) }) })
         useCase?.run(useCaseExecutor)
