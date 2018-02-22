@@ -50,4 +50,18 @@ class EitherTest {
         Assert.assertEquals("Diego Armando Maradona", value)
     }
 
+    @Test
+    fun `Should map right bias and return a right Either`() {
+        val value = Right("Diego Armando Maradona").bimap({ "Error"}, { "Success" })
+        Assert.assertEquals(Right("Success"), value)
+        Assert.assertTrue(value.isRight())
+    }
+
+    @Test
+    fun `Should map left bias and return a left Either`() {
+        val value = Left("Diego Armando Maradona").bimap({ "Error"}, { "Success" })
+        Assert.assertEquals(Left("Error"), value)
+        Assert.assertTrue(value.isLeft())
+    }
+
 }
