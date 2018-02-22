@@ -22,6 +22,18 @@ sealed class Either<out L, out R> {
      * Example:
      * ```
      * val result: Either<Error, Value> = someMethod()
+     * result.bimap(
+     *      { "Error" },
+     *      { "Success with $it" }
+     * )
+     * ```
+     */
+    inline fun <C, P> bimap(left: (L) -> C, right: (R) -> P): Either<C, P> = fold({ Left(left(it)) }, { Right(right(it)) })
+
+    /**
+     * Example:
+     * ```
+     * val result: Either<Error, Value> = someMethod()
      * result.fold(
      *      { log("Error with $it") },
      *      { log("Success with $it") }
@@ -72,7 +84,7 @@ sealed class Either<out L, out R> {
      */
     fun <B> Either<*, B>.getOrElse(default: () -> B): B = fold({ default() }, { it })
 
-    fun <L, R, S> Either<L, R>.flatMap(f: (R) -> Either<L, S>) : Either<L, S> = when(this) {
+    fun <L, R, S> Either<L, R>.flatMap(f: (R) -> Either<L, S>): Either<L, S> = when (this) {
         is Either.Left -> Either.Left(value)
         is Either.Right -> f(value)
     }
