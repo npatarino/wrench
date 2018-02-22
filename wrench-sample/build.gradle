@@ -3,8 +3,9 @@ version '1.0-SNAPSHOT'
 
 buildscript {
     ext.kotlin_version = '1.2.0'
-    ext.junit_version = '4.12'
     ext.coroutines_version = '0.20'
+    ext.junit_version = '4.12'
+    ext.mockito_kotlin_version = '1.5.0'
 
     repositories {
         mavenCentral()
@@ -21,9 +22,14 @@ repositories {
 }
 
 dependencies {
+
+    compile(project(':wrench'))
+
     compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
     compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+
     testCompile "junit:junit:$junit_version"
+    testCompile "com.nhaarman:mockito-kotlin:$mockito_kotlin_version"
 }
 
 compileKotlin {
@@ -32,5 +38,8 @@ compileKotlin {
 compileTestKotlin {
     kotlinOptions.jvmTarget = "1.8"
 }
-
-kotlin { experimental { coroutines 'enable' } }
+kotlin {
+    experimental {
+        coroutines "enable"
+    }
+}
