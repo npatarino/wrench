@@ -1,11 +1,11 @@
-group 'me.nibbleapp'
-version '0.26'
+group 'com.idealista.android'
+version '1.0-SNAPSHOT'
 
 buildscript {
     ext.kotlin_version = '1.2.21'
-    ext.coroutines_version = '0.22.2'
     ext.junit_version = '4.12'
-    ext.mockito_version = '2.8.9'
+    ext.coroutines_version = '0.22.2'
+    ext.mockito_kotlin_version = '1.5.0'
 
     repositories {
         mavenCentral()
@@ -15,30 +15,23 @@ buildscript {
     }
 }
 
-apply plugin: 'java'
 apply plugin: 'kotlin'
-
-sourceCompatibility = 1.8
-
-kotlin {
-    experimental {
-        coroutines 'enable'
-    }
-}
 
 repositories {
     mavenCentral()
-    jcenter()
-}
-
-sourceSets {
-    main.java.srcDirs += 'src/main/kotlin/'
-    test.java.srcDirs += 'src/test/kotlin/'
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
+    compile "org.jetbrains.kotlin:kotlin-stdlib-jre8:$kotlin_version"
     compile "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
-    testCompile group: 'junit', name: 'junit', version: "$junit_version"
-    testCompile "org.mockito:mockito-core:$mockito_version"
+    testCompile "junit:junit:$junit_version"
 }
+
+compileKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+compileTestKotlin {
+    kotlinOptions.jvmTarget = "1.8"
+}
+
+kotlin { experimental { coroutines 'enable' } }
