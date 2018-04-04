@@ -17,9 +17,13 @@ sealed class Option<out S> {
 
 }
 
-fun Any.pure() : Option<Any> = Option.Some(this)
+fun <T> T.pure() : Option<T> = Option.Some(this)
 
-fun Any?.toOption() : Option<Any> = if (this == null) Option.None else Option.Some(this)
+fun <T> T?.toOption(): Option<T> = if (this != null) {
+    Option.Some(this)
+} else {
+    Option.None
+}
 
 fun <B> Option<B>.getOrElse(default: () -> B): B = fold({ default() }, { it })
 
