@@ -1,5 +1,7 @@
 package com.idealista.android.wrench.type
 
+import com.idealista.android.wrench.type.Either.Left
+
 sealed class Either<out L, out R> {
 
     data class Left<out T>(val value: T) : Either<T, Nothing>() {
@@ -83,10 +85,6 @@ sealed class Either<out L, out R> {
      * ```
      */
     fun <B> Either<*, B>.getOrElse(default: () -> B): B = fold({ default() }, { it })
-
-    fun <L, R, S> Either<L, R>.flatMap(f: (R) -> Either<L, S>): Either<L, S> = when (this) {
-        is Either.Left -> Either.Left(value)
-        is Either.Right -> f(value)
-    }
-
 }
+
+fun <L, R, S> Either<L, R>.flatMap(f: (R) -> Either<L, S>): Either<L, S> = fold({ Left(it) },{ f(it) })

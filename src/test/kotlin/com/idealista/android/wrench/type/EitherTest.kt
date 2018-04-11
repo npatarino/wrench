@@ -1,7 +1,7 @@
 package com.idealista.android.wrench.type
 
-import com.idealista.android.wrench.type.Either.Right
 import com.idealista.android.wrench.type.Either.Left
+import com.idealista.android.wrench.type.Either.Right
 import org.junit.Assert
 import org.junit.Test
 
@@ -62,6 +62,24 @@ class EitherTest {
         val value = Left("Diego Armando Maradona").bimap({ "Error"}, { "Success" })
         Assert.assertEquals(Left("Error"), value)
         Assert.assertTrue(value.isLeft())
+    }
+
+    @Test
+    fun `flatMap should return Left if Right and Left are used`() {
+        val value = Right("Diego Armando Maradona").flatMap {
+            Left("Error")
+        }
+        Assert.assertEquals(Left("Error"), value)
+        Assert.assertTrue(value.isLeft())
+    }
+
+    @Test
+    fun `flatMap should return Right if Right and Right are used`() {
+        val value = Right("Diego Armando Maradona").flatMap {
+            Right("Error")
+        }
+        Assert.assertEquals(Right("Error"), value)
+        Assert.assertTrue(value.isRight())
     }
 
 }
